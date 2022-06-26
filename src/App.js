@@ -1,5 +1,7 @@
 import { Component } from "react";
 import "./App.css";
+import CardList from './components/card-list/card-list.component';
+import SearchBox from "./components/search-box/search-box.component";
 
 class App extends Component {
   constructor() {
@@ -20,9 +22,6 @@ class App extends Component {
         this.setState( // setState(), for re-rendering the site to to update the changes
           () => {
             return { monsters: users }; // update the changes
-          },
-          () => {
-            console.log(this.monsters); // calling the changes to work sychronously in asynchronous evnv.
           }
         )
       );
@@ -40,6 +39,8 @@ class App extends Component {
 
 
   render() {
+    console.log("render from app");
+
 
     // optimising the varilables rather than calling everytime this.state.varibaleName
     const { monsters, searchText } = this.state;
@@ -51,18 +52,10 @@ class App extends Component {
     )
     return (
       <div className="App">
-        <input
-          className="search-box"
-          type="search"
-          placeholder="search monsters"
-          onChange={onSearchChange}
-        />
-
-        {filteredMosters.map((monster) => {
-          return <h1 key={monster.id}>{monster.name}</h1>; // list out the filtered monsters using map
-        })}
+       <SearchBox onSearchChangeHandler={onSearchChange} />
+       <CardList monsters={filteredMosters} />
       </div>
-    );
+    )
   }
 }
 
