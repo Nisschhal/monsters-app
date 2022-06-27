@@ -52,6 +52,9 @@ class App extends Component {
     )
     return (
       <div className="App"> 
+      <h1 className="app-title">
+        Cutie Pies
+      </h1>
       {/* calls the dynamic search-box component using the props */}
        <SearchBox onSearchChangeHandler={onSearchChange} placeholder="search-monsters" className="monster-search-box" />
 

@@ -3,6 +3,7 @@ import { Component } from "react";
 import './card-list.style.css';
 import Card from'./card.component';
 
+// css file need its extension but not with jsx file
 
 class CardList extends Component {
   render() {
@@ -16,6 +17,7 @@ class CardList extends Component {
         {monsters.map((monster) => {
           const {name, email, id} = monster;
           return (
+            // calling the card component by passing the list in it.
          <Card list={monster} />
         )})}
       </div>
