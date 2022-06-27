@@ -8,6 +8,7 @@ const App = () => {
   const [searchText, setSearchText] = useState("");
   const [monsters, setMonsters] = useState([]);
   const [filteredMosters, setFilteredMonsters] = useState([]);
+  const [titleText, setTitleText] = useState('');
   console.log({ monsters });
 
   useEffect(() => {
@@ -33,14 +34,26 @@ const App = () => {
       searchTextField
     );
   };
+  const ontitleChange = (event) => {
+    const newTitleText = event.target.value.toLocaleLowerCase(); // get the data from input field
+    setTitleText(
+      // calls the render again to update the changes
+      newTitleText
+    );
+  };
 
   // optimising the varilables rather than calling everytime this.state.varibaleName
   // const { onSearchChange } = this;
 
   return (
     <div className="App">
-      <h1 className="app-title">Cutie Pies</h1>
+      <h1 className="app-title">{titleText}</h1>
       {/* calls the dynamic search-box component using the props */}
+      <SearchBox
+        onSearchChangeHandler={ontitleChange}
+        placeholder="Insert Title"
+        className="title-search-box"
+      />
       <SearchBox
         onSearchChangeHandler={onSearchChange}
         placeholder="Search Cuties"
