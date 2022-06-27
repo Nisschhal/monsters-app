@@ -1,68 +1,84 @@
-import { Component } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
-import CardList from './components/card-list/card-list.component';
+import CardList from "./components/card-list/card-list.component";
 import SearchBox from "./components/search-box/search-box.component";
 
-class App extends Component {
-  constructor() {
-    super();
+const App = () => {
+  console.log("render from app");
+  const [searchText, setSearchText] = useState("");
+  const [monsters, setMonsters] = useState([]);
+  const [filteredMosters, setFilteredMonsters] = useState([]);
+  console.log({ monsters });
 
-    this.state = {
-      monsters: [],
-      searchText: "",
-    };
-  }
+  useEffect(() => {
+    console.log("working!!");
+    // gets the resolved data from api
+    // convert the resolved data into json file
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((response) => response.json())
+      .then((user) => setMonsters(user));
+  }, []);
 
+  useEffect(() => {
+    const newfilteredMosters = monsters.filter((monster) => {
+      return monster.name.toLocaleLowerCase().includes(searchText);
+    }); // evaluates the changes using the state.searchText
+    setFilteredMonsters(newfilteredMosters);
+  }, [monsters, searchText]);
 
-  // run the following code while mounting code into the site
-  componentDidMount() {
-    fetch("https://jsonplaceholder.typicode.com/users") // gets the resolved data from api
-      .then((response) => response.json()) // convert the resolved data into json file
-      .then((users) => 
-        this.setState( // setState(), for re-rendering the site to to update the changes
-          () => {
-            return { monsters: users }; // update the changes
-          }
-        )
-      );
-  }
-
-  onSearchChange = (event) => {
-    const searchText = event.target.value.toLocaleLowerCase(); // get the data from input field
-    this.setState( // calls the render again to update the changes
-      () => {
-        return { searchText }; // update the changes of searchText
-      },
+  const onSearchChange = (event) => {
+    const searchTextField = event.target.value.toLocaleLowerCase(); // get the data from input field
+    setSearchText(
+      // calls the render again to update the changes
+      searchTextField
     );
   };
 
+  // optimising the varilables rather than calling everytime this.state.varibaleName
+  // const { onSearchChange } = this;
 
-
-  render() {
-    console.log("render from app");
-
-
-    // optimising the varilables rather than calling everytime this.state.varibaleName
-    const { monsters, searchText } = this.state;
-    const { onSearchChange } = this;
-
-    const filteredMosters = monsters.filter((monster) => {
-       return monster.name.toLocaleLowerCase().includes(searchText);
-      } // evaluates the changes using the state.searchText
-    )
-    return (
-      <div className="App"> 
-      <h1 className="app-title">
-        Cutie Pies
-      </h1>
+  return (
+    <div className="App">
+      <h1 className="app-title">Cutie Pies</h1>
       {/* calls the dynamic search-box component using the props */}
-       <SearchBox onSearchChangeHandler={onSearchChange} placeholder="Search Cuties" className="monster-search-box" />
+      <SearchBox
+        onSearchChangeHandler={onSearchChange}
+        placeholder="Search Cuties"
+        className="monster-search-box"
+      />
 
-       {/* calling dynamic card-list component for filteredMosters */}
-       <CardList monsters={filteredMosters} />
-      </div>
-    )
-  }
-}
+      {/* calling dynamic card-list component for filteredMosters */}
+      <CardList monsters={filteredMosters} />
+    </div>
+  );
+};
+
+// class App extends Component {
+//   constructor() {
+//     super();
+
+//     this.state = {
+//       monsters: [],
+//       searchText: "",
+//     };
+//   }
+
+//   // run the following code while mounting code into the site
+//   componentDidMount() {
+//     fetch("https://jsonplaceholder.typicode.com/users") // gets the resolved data from api
+//       .then((response) => response.json()) // convert the resolved data into json file
+//       .then((users) =>
+//         this.setState( // setState(), for re-rendering the site to to update the changes
+//           () => {
+//             return { monsters: users }; // update the changes
+//           }
+//         )
+//       );
+//   }
+
+//   render() {
+
+//   }
+// }
 
 export default App;
