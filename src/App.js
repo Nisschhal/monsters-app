@@ -54,6 +54,8 @@ class App extends Component {
       <div className="App"> 
       {/* calls the dynamic search-box component using the props */}
        <SearchBox onSearchChangeHandler={onSearchChange} placeholder="search-monsters" className="monster-search-box" />
+
+       {/* calling dynamic card-list component for filteredMosters */}
        <CardList monsters={filteredMosters} />
       </div>
     )
